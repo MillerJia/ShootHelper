@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QScreen>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent)
     setAttribute(Qt::WA_TranslucentBackground,true);
     // 窗口无边框 保持置顶
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    // 获取主屏幕
+    QScreen *screen = QGuiApplication::primaryScreen();
+    // 猎杀对决游戏，1920*1080p的分辨率下，准星y坐标为598
+    move((screen->geometry().width()-width())/2,598);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -24,9 +29,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if(event->key()== Qt::Key_Up && (event->modifiers()==Qt::ControlModifier)){
         qDebug()<<"up";
         move(pos().x(),pos().y()-1);
+      //  qDebug()<<"y="<<pos().y();
     }else if(event->key()== Qt::Key_Down && (event->modifiers()==Qt::ControlModifier)){
         qDebug()<<"down";
         move(pos().x(),pos().y()+1);
+       // qDebug()<<"y="<<pos().y();
     }
 }
 
